@@ -3,6 +3,7 @@ import { z } from "zod";
 
 const TEXT_MIN_LENGTH = 5;
 
+// TODO: move to utils or something
 const getShortDate = () => {
   const date = new Date();
   date.setHours(0);
@@ -24,7 +25,7 @@ export const taskRouter = router({
         deadline: z
           .date()
           .min(new Date(), { message: "A deadline must be greater than today" })
-          .nullable(),
+          .nullish(),
       })
     )
     .mutation(async ({ input: { text, deadline }, ctx }) => {
