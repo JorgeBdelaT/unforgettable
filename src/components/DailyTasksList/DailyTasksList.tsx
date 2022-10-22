@@ -11,7 +11,7 @@ const DailyTasksList = () => {
   if (tasksLoading)
     return (
       <div>
-        No tasks to loading
+        loading...
         <br /> TODO: implement skeleton
       </div>
     );
