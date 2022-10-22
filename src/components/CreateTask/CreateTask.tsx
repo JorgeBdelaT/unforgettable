@@ -43,7 +43,7 @@ const CreateTask = () => {
       },
       onError: (err, _, context) => {
         // TODO: do something better with the error
-        window.alert("No se pudo crear la tarea :(");
+        window.alert("No se pudo crear la tarea :(", err.message);
 
         queryClient.setQueryData(
           GET_ALL_FROM_TODAY_QUERY_KEY,
