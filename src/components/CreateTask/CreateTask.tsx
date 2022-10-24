@@ -1,9 +1,10 @@
-import { Task } from "@prisma/client";
-import { useQueryClient } from "@tanstack/react-query";
 import { useState, FormEvent } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+
+import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 
-const GET_ALL_FROM_TODAY_QUERY_KEY = [["tasks", "getAllFromToday"]];
+const GET_ALL_FROM_TODAY_QUERY_KEY = [["tasks", "getAll"]];
 
 const CreateTask = () => {
   // TODO: use react hook form
