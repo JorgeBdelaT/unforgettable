@@ -6,7 +6,8 @@ const DailyTasksList = () => {
     data: tasks,
     isLoading: tasksLoading,
     isError: tasksError,
-  } = trpc.tasks.getAllFromToday.useQuery();
+  } = trpc.tasks.getAll.useQuery();
+  console.log({ tasks });
 
   if (tasksLoading)
     return (
