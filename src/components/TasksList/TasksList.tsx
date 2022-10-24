@@ -1,12 +1,12 @@
 import { trpc } from "../../utils/trpc";
 import TaskListItem from "../TaskListItem";
 
-const DailyTasksList = () => {
+const TasksList = () => {
   const {
     data: tasks,
     isLoading: tasksLoading,
     isError: tasksError,
-  } = trpc.tasks.getAllFromToday.useQuery();
+  } = trpc.tasks.getAll.useQuery();
 
   if (tasksLoading)
     return (
@@ -35,7 +35,7 @@ const DailyTasksList = () => {
     );
 
   return (
-    <ul>
+    <ul className="my-10 overflow-auto">
       {tasks?.map((task) => (
         <TaskListItem key={task.id} task={task} />
       ))}
@@ -43,4 +43,4 @@ const DailyTasksList = () => {
   );
 };
 
-export default DailyTasksList;
+export default TasksList;
