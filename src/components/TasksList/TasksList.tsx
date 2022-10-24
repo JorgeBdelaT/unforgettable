@@ -1,13 +1,12 @@
 import { trpc } from "../../utils/trpc";
 import TaskListItem from "../TaskListItem";
 
-const DailyTasksList = () => {
+const TasksList = () => {
   const {
     data: tasks,
     isLoading: tasksLoading,
     isError: tasksError,
   } = trpc.tasks.getAll.useQuery();
-  console.log({ tasks });
 
   if (tasksLoading)
     return (
@@ -36,7 +35,7 @@ const DailyTasksList = () => {
     );
 
   return (
-    <ul>
+    <ul className="my-10">
       {tasks?.map((task) => (
         <TaskListItem key={task.id} task={task} />
       ))}
@@ -44,4 +43,4 @@ const DailyTasksList = () => {
   );
 };
 
-export default DailyTasksList;
+export default TasksList;
