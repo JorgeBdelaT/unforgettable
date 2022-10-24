@@ -35,7 +35,7 @@ const TasksList = () => {
     );
 
   return (
-    <ul className="my-10">
+    <ul className="my-10 overflow-auto">
       {tasks?.map((task) => (
         <TaskListItem key={task.id} task={task} />
       ))}

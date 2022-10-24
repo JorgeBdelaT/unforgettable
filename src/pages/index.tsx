@@ -12,7 +12,7 @@ const Tasks: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section>
+      <section className="flex h-full flex-col">
         <h1 className="mb-6 text-2xl font-medium text-gray-200">Tareas</h1>
         <TasksList />
         <CreateTask />
