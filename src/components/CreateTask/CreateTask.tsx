@@ -1,9 +1,10 @@
-import { Task } from "@prisma/client";
-import { useQueryClient } from "@tanstack/react-query";
 import { useState, FormEvent } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+
+import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 
-const GET_ALL_FROM_TODAY_QUERY_KEY = [["tasks", "getAllFromToday"]];
+const GET_ALL_FROM_TODAY_QUERY_KEY = [["tasks", "getAll"]];
 
 const CreateTask = () => {
   // TODO: use react hook form
@@ -32,7 +33,6 @@ const CreateTask = () => {
               createdAt: new Date(),
               updatedAt: new Date(),
             };
-            console.log({ old });
 
             if (!old) return [optimisticTask];
             return [optimisticTask, ...old];
@@ -62,16 +62,22 @@ const CreateTask = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="mt-auto flex flex-col gap-3" onSubmit={handleSubmit}>
       <input
         required
+        className="w-full rounded p-2 text-neutral-900"
         value={text}
         onInput={(e) => setText(e.currentTarget.value)}
-        placeholder="Something to do today?"
+        placeholder="Algo que hacer?"
         name="text"
         type="text"
       />
-      <button disabled={createTaskLoading}>Add task</button>
+      <button
+        className="rounded bg-indigo-600 py-2 px-4 font-bold text-white hover:bg-indigo-500"
+        disabled={createTaskLoading}
+      >
+        Agregar
+      </button>
     </form>
   );
 };

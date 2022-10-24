@@ -3,15 +3,6 @@ import { z } from "zod";
 
 const TEXT_MIN_LENGTH = 5;
 
-// TODO: move to utils or something
-const getShortDate = () => {
-  const date = new Date();
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setMilliseconds(0);
-  return date;
-};
-
 export const taskRouter = router({
   create: publicProcedure
     .input(
@@ -69,10 +60,9 @@ export const taskRouter = router({
       });
     }),
 
-  getAllFromToday: publicProcedure.query(({ ctx }) => {
+  getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.task.findMany({
       orderBy: { priority: "desc" },
-      where: { createdAt: { gte: getShortDate() } },
     });
   }),
 });
