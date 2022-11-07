@@ -43,8 +43,9 @@ export const taskRouter = router({
   delete: publicProcedure
     .input(z.object({ taskId: z.string().cuid() }))
     .mutation(({ ctx, input: { taskId } }) => {
-      return ctx.prisma.task.deleteMany({
+      return ctx.prisma.task.update({
         where: { id: taskId },
+        data: { deleted: true },
       });
     }),
 
@@ -72,6 +73,7 @@ export const taskRouter = router({
 
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.task.findMany({
+      where: { deleted: false },
       orderBy: { priority: "desc" },
     });
   }),
