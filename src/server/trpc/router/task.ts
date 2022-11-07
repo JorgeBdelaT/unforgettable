@@ -45,7 +45,7 @@ export const taskRouter = router({
     .mutation(({ ctx, input: { taskId } }) => {
       return ctx.prisma.task.update({
         where: { id: taskId },
-        data: { deleted: true },
+        data: { deletedAt: new Date() },
       });
     }),
 
@@ -73,7 +73,7 @@ export const taskRouter = router({
 
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.task.findMany({
-      where: { deleted: false },
+      where: { deletedAt: null },
       orderBy: { priority: "desc" },
     });
   }),
