@@ -20,15 +20,16 @@ export const taskRouter = router({
       })
     )
     .mutation(async ({ input: { text, deadline }, ctx }) => {
-      const priority = (await ctx.prisma.task.findMany()).reduce(
-        (maxPriority, { priority }) => {
-          if (priority > maxPriority) {
-            maxPriority = priority;
-          }
-          return maxPriority;
-        },
-        0
-      );
+      const priority =
+        (await ctx.prisma.task.findMany()).reduce(
+          (maxPriority, { priority }) => {
+            if (priority > maxPriority) {
+              maxPriority = priority;
+            }
+            return maxPriority;
+          },
+          0
+        ) + 1;
 
       return ctx.prisma.task.create({
         data: {
