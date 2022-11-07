@@ -4,7 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 
-const GET_ALL_FROM_TODAY_QUERY_KEY = [["tasks", "getAll"]];
+// TODO: move to constants file
+export const GET_ALL_TASKS_QUERY_KEY = [["tasks", "getAll"]];
 
 const CreateTask = () => {
   // TODO: use react hook form
@@ -15,12 +16,13 @@ const CreateTask = () => {
   const { mutate: createTask, isLoading: createTaskLoading } =
     trpc.tasks.create.useMutation({
       onMutate: async ({ text }) => {
-        await queryClient.cancelQueries(GET_ALL_FROM_TODAY_QUERY_KEY);
+        setText("");
 
-        const previousTasks = queryClient.getQueriesData([]);
+        await queryClient.cancelQueries(GET_ALL_TASKS_QUERY_KEY);
+        const previousTasks = queryClient.getQueryData(GET_ALL_TASKS_QUERY_KEY);
 
         queryClient.setQueryData(
-          GET_ALL_FROM_TODAY_QUERY_KEY,
+          GET_ALL_TASKS_QUERY_KEY,
           (old: Task[] | undefined) => {
             const optimisticTask: Task = {
               text,
@@ -46,13 +48,12 @@ const CreateTask = () => {
         window.alert(`No se pudo crear la tarea :( ${err.message}`);
 
         queryClient.setQueryData(
-          GET_ALL_FROM_TODAY_QUERY_KEY,
+          GET_ALL_TASKS_QUERY_KEY,
           context?.previousTasks
         );
       },
-      onSettled: (task) => {
-        queryClient.invalidateQueries(GET_ALL_FROM_TODAY_QUERY_KEY);
-        if (task) setText("");
+      onSettled: () => {
+        queryClient.invalidateQueries(GET_ALL_TASKS_QUERY_KEY);
       },
     });
 
@@ -62,7 +63,11 @@ const CreateTask = () => {
   };
 
   return (
-    <form className="mt-auto flex flex-col gap-3" onSubmit={handleSubmit}>
+    <form
+      className="mt-auto flex flex-col gap-3"
+      autoComplete="off"
+      onSubmit={handleSubmit}
+    >
       <input
         required
         className="w-full rounded p-2 text-neutral-900"
