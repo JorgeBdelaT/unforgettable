@@ -29,6 +29,7 @@ model Task {
   id        String    @id @default(cuid())
   text      String
   completed Boolean   @default(false)
+  deleted   Boolean   @default(false)
   deadline  DateTime?
   priority  Int
 
