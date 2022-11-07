@@ -81,7 +81,7 @@ const CreateTask = () => {
         className="rounded bg-indigo-600 py-2 px-4 font-bold text-white hover:bg-indigo-500"
         disabled={createTaskLoading}
       >
-        Agregar
+        {createTaskLoading ? "........" : "Agregar"}
       </button>
     </form>
   );
