@@ -29,12 +29,12 @@ model Task {
   id        String    @id @default(cuid())
   text      String
   completed Boolean   @default(false)
-  deleted   Boolean   @default(false)
   deadline  DateTime?
   priority  Int
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Reminder {
