@@ -13,7 +13,7 @@ const Tasks: NextPage = () => {
       </Head>
 
       <section className="flex h-full flex-col">
-        <h1 className="mb-6 text-2xl font-medium text-gray-200">Tareas</h1>
+        <h1 className="mb-16 text-2xl font-medium text-gray-200">Tareas</h1>
         <TasksList />
         <CreateTask />
       </section>
