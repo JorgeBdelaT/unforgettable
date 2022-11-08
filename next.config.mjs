@@ -1,6 +1,17 @@
 // @ts-check
 import { env } from "./src/env/server.mjs";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import NextPWA from "next-pwa";
+
+const withPWA = NextPWA({
+  dest: "public",
+  disable: env.NODE_ENV !== "production",
+  register: true,
+  skipWaiting: true,
+});
+
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -10,7 +21,7 @@ import { env } from "./src/env/server.mjs";
  * @constraint {{import('next').NextConfig}}
  */
 function defineNextConfig(config) {
-  return config;
+  return withPWA(config);
 }
 
 export default defineNextConfig({
