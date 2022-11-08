@@ -1,5 +1,6 @@
 import { router, publicProcedure } from "../trpc";
 import { z } from "zod";
+import { Task } from "@prisma/client";
 
 const TEXT_MIN_LENGTH = 5;
 
@@ -48,6 +49,31 @@ export const taskRouter = router({
         data: { deletedAt: new Date() },
       });
     }),
+
+  undoLastRemoval: publicProcedure.mutation(async ({ ctx }) => {
+    const latestRemoval = (await ctx.prisma.task.findMany()).reduce(
+      (acc, curr) => {
+        // TODO: redactor
+        if (
+          (acc?.deletedAt &&
+            curr?.deletedAt &&
+            curr.deletedAt > acc.deletedAt) ||
+          !acc
+        ) {
+          acc = curr;
+        }
+        return acc;
+      },
+      null as Task | null
+    );
+
+    if (latestRemoval) {
+      return ctx.prisma.task.update({
+        where: { id: latestRemoval.id },
+        data: { deletedAt: null },
+      });
+    }
+  }),
 
   toggleCompletedState: publicProcedure
     .input(z.object({ taskId: z.string().cuid() }))

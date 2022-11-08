@@ -32,6 +32,7 @@ const CreateTask = () => {
               priority: 99999999999999,
               deadline: null,
               completed: false,
+              deletedAt: null,
               createdAt: new Date(),
               updatedAt: new Date(),
             };
