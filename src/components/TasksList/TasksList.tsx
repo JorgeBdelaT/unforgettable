@@ -1,5 +1,19 @@
+import {
+  ExclamationTriangleIcon,
+  NewspaperIcon,
+} from "@heroicons/react/24/solid";
+import { useIsMutating } from "@tanstack/react-query";
+import {
+  HEADER_HEIGHT,
+  CREATE_TASK_FORM_HEIGHT,
+  TASKS_LIST_ID,
+  UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
+} from "../../constants";
+
 import { trpc } from "../../utils/trpc";
-import TaskListItem from "../TaskListItem";
+
+import TaskListItem from "./TaskListItem";
+import TasksListSkeleton from "./TasksListSkeleton";
 
 const TasksList = () => {
   const {
@@ -8,19 +22,22 @@ const TasksList = () => {
     isError: tasksError,
   } = trpc.tasks.getAll.useQuery();
 
-  if (tasksLoading)
-    return (
-      <div>
-        loading...
-        <br /> TODO: implement skeleton
-      </div>
-    );
+  const isMutatingUndoLastRemoval = useIsMutating({
+    mutationKey: UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
+  });
+
+  if (tasksLoading || isMutatingUndoLastRemoval) return <TasksListSkeleton />;
 
   if (tasksError)
     return (
-      <div>
-        Ups! Something happend
-        <br /> TODO: implement error component
+      <div
+        className="flex flex-col items-center justify-center gap-6 overflow-y-auto text-slate-500"
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+        }}
+      >
+        <ExclamationTriangleIcon className="h-24 w-24" />
+        <p className="text-xl font-medium">Ups! Algo no anda bien.</p>
       </div>
     );
 
@@ -28,14 +45,25 @@ const TasksList = () => {
 
   if (hasNoData)
     return (
-      <div>
-        No tasks to display
-        <br /> TODO: implement empty list component
+      <div
+        className="flex flex-col items-center justify-center gap-6 overflow-y-auto text-slate-500"
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+        }}
+      >
+        <NewspaperIcon className="h-24 w-24" />
+        <p className="text-xl font-medium">Nada para mostrar aún!</p>
       </div>
     );
 
   return (
-    <ul className="my-10 overflow-auto">
+    <ul
+      id={TASKS_LIST_ID}
+      className="overflow-y-auto px-8 pt-16"
+      style={{
+        height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+      }}
+    >
       {tasks?.map((task) => (
         <TaskListItem key={task.id} task={task} />
       ))}

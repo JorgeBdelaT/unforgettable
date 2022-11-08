@@ -1,7 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import TasksList from "../components/TasksList";
-import CreateTask from "../components/CreateTask";
+
+import {
+  CreateTask,
+  Header,
+  TasksList,
+  UndoLastTaskRemovalBtn,
+} from "../components";
 
 const Tasks: NextPage = () => {
   return (
@@ -13,7 +18,7 @@ const Tasks: NextPage = () => {
       </Head>
 
       <section className="flex h-full flex-col">
-        <h1 className="mb-6 text-2xl font-medium text-gray-200">Tareas</h1>
+        <Header title="Tareas" actions={<UndoLastTaskRemovalBtn />} />
         <TasksList />
         <CreateTask />
       </section>

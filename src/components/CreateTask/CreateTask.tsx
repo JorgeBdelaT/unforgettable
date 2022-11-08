@@ -1,10 +1,14 @@
-import { useState, FormEvent } from "react";
+import React, { useState, FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 
-const GET_ALL_FROM_TODAY_QUERY_KEY = [["tasks", "getAll"]];
+import {
+  CREATE_TASK_FORM_HEIGHT,
+  GET_ALL_TASKS_QUERY_KEY,
+  TASKS_LIST_ID,
+} from "../../constants";
 
 const CreateTask = () => {
   // TODO: use react hook form
@@ -15,12 +19,17 @@ const CreateTask = () => {
   const { mutate: createTask, isLoading: createTaskLoading } =
     trpc.tasks.create.useMutation({
       onMutate: async ({ text }) => {
-        await queryClient.cancelQueries(GET_ALL_FROM_TODAY_QUERY_KEY);
+        // scroll to top of the list
+        const tasksListElement = document.getElementById(TASKS_LIST_ID);
+        tasksListElement?.scrollTo({ top: 0, behavior: "smooth" });
 
-        const previousTasks = queryClient.getQueriesData([]);
+        setText("");
+
+        await queryClient.cancelQueries(GET_ALL_TASKS_QUERY_KEY);
+        const previousTasks = queryClient.getQueryData(GET_ALL_TASKS_QUERY_KEY);
 
         queryClient.setQueryData(
-          GET_ALL_FROM_TODAY_QUERY_KEY,
+          GET_ALL_TASKS_QUERY_KEY,
           (old: Task[] | undefined) => {
             const optimisticTask: Task = {
               text,
@@ -30,6 +39,7 @@ const CreateTask = () => {
               priority: 99999999999999,
               deadline: null,
               completed: false,
+              deletedAt: null,
               createdAt: new Date(),
               updatedAt: new Date(),
             };
@@ -46,13 +56,12 @@ const CreateTask = () => {
         window.alert(`No se pudo crear la tarea :( ${err.message}`);
 
         queryClient.setQueryData(
-          GET_ALL_FROM_TODAY_QUERY_KEY,
+          GET_ALL_TASKS_QUERY_KEY,
           context?.previousTasks
         );
       },
-      onSettled: (task) => {
-        queryClient.invalidateQueries(GET_ALL_FROM_TODAY_QUERY_KEY);
-        if (task) setText("");
+      onSettled: () => {
+        queryClient.invalidateQueries(GET_ALL_TASKS_QUERY_KEY);
       },
     });
 
@@ -62,24 +71,30 @@ const CreateTask = () => {
   };
 
   return (
-    <form className="mt-auto flex flex-col gap-3" onSubmit={handleSubmit}>
+    <form
+      className="mt-auto flex flex-col justify-center p-6"
+      autoComplete="off"
+      onSubmit={handleSubmit}
+      style={{ height: CREATE_TASK_FORM_HEIGHT }}
+    >
       <input
         required
-        className="w-full rounded p-2 text-neutral-900"
+        className="w-full rounded p-2 text-neutral-900 disabled:bg-gray-200"
         value={text}
         onInput={(e) => setText(e.currentTarget.value)}
         placeholder="Algo que hacer?"
         name="text"
         type="text"
+        disabled={createTaskLoading}
       />
       <button
-        className="rounded bg-indigo-600 py-2 px-4 font-bold text-white hover:bg-indigo-500"
+        className="mt-3 rounded bg-indigo-600 py-2 px-4 font-bold text-white hover:bg-indigo-500 disabled:pointer-events-none disabled:animate-pulse disabled:bg-gray-400"
         disabled={createTaskLoading}
       >
-        Agregar
+        {createTaskLoading ? "........" : "Agregar"}
       </button>
     </form>
   );
 };
 
-export default CreateTask;
+export default React.memo(CreateTask);
