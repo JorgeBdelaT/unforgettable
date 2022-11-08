@@ -79,12 +79,13 @@ const CreateTask = () => {
     >
       <input
         required
-        className="w-full rounded p-2 text-neutral-900"
+        className="w-full rounded p-2 text-neutral-900 disabled:bg-gray-200"
         value={text}
         onInput={(e) => setText(e.currentTarget.value)}
         placeholder="Algo que hacer?"
         name="text"
         type="text"
+        disabled={createTaskLoading}
       />
       <button
         className="mt-3 rounded bg-indigo-600 py-2 px-4 font-bold text-white hover:bg-indigo-500 disabled:pointer-events-none disabled:animate-pulse disabled:bg-gray-400"
