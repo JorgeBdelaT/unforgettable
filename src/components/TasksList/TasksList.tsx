@@ -1,5 +1,5 @@
 import { trpc } from "../../utils/trpc";
-import TaskListItem from "../TaskListItem";
+import TaskListItem from "./TaskListItem";
 
 const TasksList = () => {
   const {
