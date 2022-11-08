@@ -1,5 +1,7 @@
 import { trpc } from "../../utils/trpc";
+
 import TaskListItem from "./TaskListItem";
+import TasksListSkeleton from "./TasksListSkeleton";
 
 const TasksList = () => {
   const {
@@ -8,13 +10,7 @@ const TasksList = () => {
     isError: tasksError,
   } = trpc.tasks.getAll.useQuery();
 
-  if (tasksLoading)
-    return (
-      <div>
-        loading...
-        <br /> TODO: implement skeleton
-      </div>
-    );
+  if (tasksLoading) return <TasksListSkeleton />;
 
   if (tasksError)
     return (
