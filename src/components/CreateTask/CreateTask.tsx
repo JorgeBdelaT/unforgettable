@@ -3,9 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
-
-// TODO: move to constants file
-export const GET_ALL_TASKS_QUERY_KEY = [["tasks", "getAll"]];
+import { GET_ALL_TASKS_QUERY_KEY } from "../../constants";
 
 const CreateTask = () => {
   // TODO: use react hook form

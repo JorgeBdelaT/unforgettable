@@ -5,9 +5,9 @@ import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { CreateTask, Header, TasksList } from "../components";
-import { GET_ALL_TASKS_QUERY_KEY } from "../components/CreateTask/CreateTask";
 
 import { trpc } from "../utils/trpc";
+import { GET_ALL_TASKS_QUERY_KEY } from "../constants";
 
 const Tasks: NextPage = () => {
   const queryClient = useQueryClient();

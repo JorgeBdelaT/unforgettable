@@ -3,7 +3,7 @@ import { Task } from "@prisma/client";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { trpc } from "../../utils/trpc";
 import { useQueryClient } from "@tanstack/react-query";
-import { GET_ALL_TASKS_QUERY_KEY } from "../CreateTask/CreateTask";
+import { GET_ALL_TASKS_QUERY_KEY } from "../../constants";
 
 interface TaskListItemProps {
   task: Task;
