@@ -1,3 +1,7 @@
+import {
+  ExclamationTriangleIcon,
+  NewspaperIcon,
+} from "@heroicons/react/24/solid";
 import { useIsMutating } from "@tanstack/react-query";
 import {
   HEADER_HEIGHT,
@@ -26,9 +30,14 @@ const TasksList = () => {
 
   if (tasksError)
     return (
-      <div>
-        Ups! Something happend
-        <br /> TODO: implement error component
+      <div
+        className="flex flex-col items-center justify-center gap-6 overflow-y-auto text-slate-500"
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+        }}
+      >
+        <ExclamationTriangleIcon className="h-24 w-24" />
+        <p className="text-xl font-medium">Ups! Algo no anda bien.</p>
       </div>
     );
 
@@ -36,9 +45,14 @@ const TasksList = () => {
 
   if (hasNoData)
     return (
-      <div>
-        No tasks to display
-        <br /> TODO: implement empty list component
+      <div
+        className="flex flex-col items-center justify-center gap-6 overflow-y-auto text-slate-500"
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+        }}
+      >
+        <NewspaperIcon className="h-24 w-24" />
+        <p className="text-xl font-medium">Nada para mostrar aún!</p>
       </div>
     );
 
