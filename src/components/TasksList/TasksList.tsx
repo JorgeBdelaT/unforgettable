@@ -1,7 +1,9 @@
+import { useIsMutating } from "@tanstack/react-query";
 import {
   HEADER_HEIGHT,
   CREATE_TASK_FORM_HEIGHT,
   TASKS_LIST_ID,
+  UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
 } from "../../constants";
 
 import { trpc } from "../../utils/trpc";
@@ -16,7 +18,11 @@ const TasksList = () => {
     isError: tasksError,
   } = trpc.tasks.getAll.useQuery();
 
-  if (tasksLoading) return <TasksListSkeleton />;
+  const isMutatingUndoLastRemoval = useIsMutating({
+    mutationKey: UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
+  });
+
+  if (tasksLoading || isMutatingUndoLastRemoval) return <TasksListSkeleton />;
 
   if (tasksError)
     return (
