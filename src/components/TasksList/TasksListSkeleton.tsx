@@ -1,20 +1,28 @@
 import React from "react";
+import { CREATE_TASK_FORM_HEIGHT, HEADER_HEIGHT } from "../../constants";
 
 const ITEMS_TO_DISPLAY = 4;
 
 const getSkeletonItemHeightClass = () => {
-  const minHeight = 10;
-  const maxHeight = 20;
+  const minHeight = 12;
+  const maxHeight = 24;
   const stepSize = 4;
 
-  return `h-${Math.max(
+  const height = Math.max(
     stepSize * Math.floor((Math.random() * maxHeight) / stepSize),
     minHeight
-  )}`;
+  );
+
+  return `h-${height}`;
 };
 
 const TasksListSkeleton = () => (
-  <ul>
+  <ul
+    className="overflow-y-auto px-8 pt-16"
+    style={{
+      height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+    }}
+  >
     {Array.from({ length: ITEMS_TO_DISPLAY }, (_, i) => (
       <li
         key={i}
