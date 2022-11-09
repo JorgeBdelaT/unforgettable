@@ -12,8 +12,8 @@ const Tasks: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Unforgettable</title>
-        <meta name="description" content="An app to remember everything" />
+        <title>Inolvidable</title>
+        <meta name="description" content="Una aplicación para recordar todo." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

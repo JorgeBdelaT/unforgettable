@@ -3,7 +3,7 @@ import { CREATE_TASK_FORM_HEIGHT, HEADER_HEIGHT } from "../../constants";
 
 const ITEMS_TO_DISPLAY = 4;
 
-const getSkeletonItemHeightClass = () => {
+const getSkeletonItemHeight = () => {
   const minHeight = 12;
   const maxHeight = 24;
   const stepSize = 4;
@@ -13,7 +13,7 @@ const getSkeletonItemHeightClass = () => {
     minHeight
   );
 
-  return `h-${height}`;
+  return `${height * 0.25}rem`;
 };
 
 const TasksListSkeleton = () => (
@@ -26,7 +26,8 @@ const TasksListSkeleton = () => (
     {Array.from({ length: ITEMS_TO_DISPLAY }, (_, i) => (
       <li
         key={i}
-        className={`mb-4 ${getSkeletonItemHeightClass()} animate-pulse rounded-lg bg-slate-800 py-2 px-4 shadow-md transition-colors`}
+        style={{ height: getSkeletonItemHeight() }}
+        className={`mb-4 animate-pulse rounded-lg bg-slate-800 py-2 px-4 shadow-md transition-colors`}
       />
     ))}
   </ul>
