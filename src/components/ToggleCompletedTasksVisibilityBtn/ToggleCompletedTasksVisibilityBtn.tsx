@@ -25,7 +25,7 @@ const ToggleCompletedTasksVisibilityBtn = () => {
   return (
     <button
       onClick={toggleDisplayCompletedTasks}
-      className="rounded-md bg-indigo-200 p-2 text-slate-800 opacity-90 hover:bg-indigo-300 disabled:pointer-events-none disabled:text-slate-500"
+      className="rounded-md bg-indigo-200 p-2 text-slate-800 opacity-90 shadow-lg hover:bg-indigo-300 disabled:pointer-events-none disabled:text-slate-500"
     >
       {iconToDisplay}
     </button>
