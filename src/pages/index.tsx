@@ -1,13 +1,32 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+
+import { unstable_getServerSession as getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 import {
   CreateTask,
   Header,
+  SignOutBtn,
   TasksList,
   ToggleCompletedTasksVisibilityBtn,
   UndoLastTaskRemovalBtn,
 } from "../components";
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth",
+        permanent: false,
+      },
+      props: { from: ctx.req.url },
+    };
+  }
+  return { props: {} };
+};
 
 const Tasks: NextPage = () => {
   return (
@@ -23,6 +42,7 @@ const Tasks: NextPage = () => {
           title="Tareas"
           actions={
             <>
+              <SignOutBtn />
               <UndoLastTaskRemovalBtn />
               <ToggleCompletedTasksVisibilityBtn />
             </>
