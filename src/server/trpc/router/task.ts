@@ -85,6 +85,7 @@ export const taskRouter = router({
           where: { id: taskId },
           data: {
             completed: !task.completed,
+            completedAt: !task.completed ? new Date() : null,
           },
         });
     }),
@@ -107,8 +108,9 @@ export const taskRouter = router({
       orderBy: { priority: "desc" },
     });
     return allTasks.filter(
-      ({ completed, updatedAt }) =>
-        !completed || (completed && updatedAt >= maxCompletedDate)
+      ({ completed, completedAt }) =>
+        !completed ||
+        (completed && completedAt && completedAt >= maxCompletedDate)
     );
   }),
 });
