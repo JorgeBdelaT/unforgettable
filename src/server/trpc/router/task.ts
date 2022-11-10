@@ -1,6 +1,7 @@
 import { router, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { Task } from "@prisma/client";
+import moment from "moment";
 
 const TEXT_MIN_LENGTH = 5;
 
@@ -99,10 +100,15 @@ export const taskRouter = router({
       });
     }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.task.findMany({
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    const maxCompletedDate = moment(new Date()).subtract(24, "h").toDate();
+    const allTasks = await ctx.prisma.task.findMany({
       where: { deletedAt: null },
       orderBy: { priority: "desc" },
     });
+    return allTasks.filter(
+      ({ completed, updatedAt }) =>
+        !completed || (completed && updatedAt >= maxCompletedDate)
+    );
   }),
 });
