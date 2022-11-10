@@ -93,8 +93,11 @@ const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
   };
 
   const createdAt = moment(task.createdAt).format(DATE_TIME_FORMAT);
-  const completedAt = task.completedAt
-    ? moment(task.completedAt).format(TIME_FORMAT)
+
+  const minutesFromCompleted = task.completedAt
+    ? Math.ceil(
+        moment.duration(moment(new Date()).diff(task.completedAt)).asMinutes()
+      )
     : null;
 
   const { completed } = task;
@@ -120,10 +123,11 @@ const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
       >
         {task.text}
       </p>
-      <div className="absolute bottom-2 right-2 flex gap-1 text-xs font-light">
-        {completedAt && (
+      <div className="absolute bottom-2 right-2 flex items-center gap-1 text-xs font-light">
+        {minutesFromCompleted && (
           <span className="text-xs font-light text-slate-600">
-            (Listo a las {completedAt})
+            (Listo hace {minutesFromCompleted}{" "}
+            {`minuto${minutesFromCompleted > 1 ? "s" : ""}`})
           </span>
         )}
         <span className=" text-gray-500">{createdAt}</span>
