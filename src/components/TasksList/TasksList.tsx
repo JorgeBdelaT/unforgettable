@@ -3,12 +3,14 @@ import {
   NewspaperIcon,
 } from "@heroicons/react/24/solid";
 import { useIsMutating } from "@tanstack/react-query";
+import { useMemo } from "react";
 import {
   HEADER_HEIGHT,
   CREATE_TASK_FORM_HEIGHT,
   TASKS_LIST_ID,
   UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
 } from "../../constants";
+import useSettingsStore from "../../stores/SettingsStore";
 
 import { trpc } from "../../utils/trpc";
 
@@ -16,6 +18,8 @@ import TaskListItem from "./TaskListItem";
 import TasksListSkeleton from "./TasksListSkeleton";
 
 const TasksList = () => {
+  const { displayCompletedTasks } = useSettingsStore();
+
   const {
     data: tasks,
     isLoading: tasksLoading,
@@ -25,6 +29,13 @@ const TasksList = () => {
   const isMutatingUndoLastRemoval = useIsMutating({
     mutationKey: UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
   });
+
+  const tasksToDisplay = useMemo(() => {
+    if (!tasks) return [];
+    if (displayCompletedTasks) return tasks;
+
+    return tasks.filter(({ completed }) => completed === false);
+  }, [displayCompletedTasks, tasks]);
 
   if (tasksLoading || isMutatingUndoLastRemoval) return <TasksListSkeleton />;
 
@@ -41,7 +52,7 @@ const TasksList = () => {
       </div>
     );
 
-  const hasNoData = !tasks?.length && !tasksLoading;
+  const hasNoData = !tasksToDisplay?.length && !tasksLoading;
 
   if (hasNoData)
     return (
@@ -52,7 +63,7 @@ const TasksList = () => {
         }}
       >
         <NewspaperIcon className="h-24 w-24" />
-        <p className="text-xl font-medium">Nada para mostrar aún!</p>
+        <p className="text-xl font-medium">Nada por hacer aún!</p>
       </div>
     );
 
@@ -64,7 +75,7 @@ const TasksList = () => {
         height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
       }}
     >
-      {tasks?.map((task) => (
+      {tasksToDisplay?.map((task) => (
         <TaskListItem key={task.id} task={task} />
       ))}
     </ul>

@@ -77,13 +77,15 @@ export const taskRouter = router({
 
   toggleCompletedState: publicProcedure
     .input(z.object({ taskId: z.string().cuid() }))
-    .mutation(({ ctx, input: { taskId } }) => {
-      return ctx.prisma.task.update({
-        where: { id: taskId },
-        data: {
-          completed: true,
-        },
-      });
+    .mutation(async ({ ctx, input: { taskId } }) => {
+      const task = await ctx.prisma.task.findUnique({ where: { id: taskId } });
+      if (task)
+        return ctx.prisma.task.update({
+          where: { id: taskId },
+          data: {
+            completed: !task.completed,
+          },
+        });
     }),
 
   changePriority: publicProcedure
