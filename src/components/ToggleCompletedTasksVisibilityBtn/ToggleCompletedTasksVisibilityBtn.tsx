@@ -4,8 +4,12 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import useSettingsStore from "../../stores/SettingsStore";
 
 const ToggleCompletedTasksVisibilityBtn = () => {
-  const { displayCompletedTasks, toggleDisplayCompletedTasks } =
-    useSettingsStore();
+  const displayCompletedTasks = useSettingsStore(
+    (state) => state.displayCompletedTasks
+  );
+  const toggleDisplayCompletedTasks = useSettingsStore(
+    (state) => state.toggleDisplayCompletedTasks
+  );
 
   const [iconToDisplay, setIconToDisplay] = useState<JSX.Element>();
 

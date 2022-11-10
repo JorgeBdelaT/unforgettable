@@ -18,7 +18,9 @@ import TaskListItem from "./TaskListItem";
 import TasksListSkeleton from "./TasksListSkeleton";
 
 const TasksList = () => {
-  const { displayCompletedTasks } = useSettingsStore();
+  const displayCompletedTasks = useSettingsStore(
+    (state) => state.displayCompletedTasks
+  );
 
   const {
     data: tasks,
