@@ -5,6 +5,7 @@ import {
   CreateTask,
   Header,
   TasksList,
+  ToggleCompletedTasksVisibilityBtn,
   UndoLastTaskRemovalBtn,
 } from "../components";
 
@@ -18,7 +19,15 @@ const Tasks: NextPage = () => {
       </Head>
 
       <section className="flex h-full flex-col">
-        <Header title="Tareas" actions={<UndoLastTaskRemovalBtn />} />
+        <Header
+          title="Tareas"
+          actions={
+            <>
+              <UndoLastTaskRemovalBtn />
+              <ToggleCompletedTasksVisibilityBtn />
+            </>
+          }
+        />
         <TasksList />
         <CreateTask />
       </section>
