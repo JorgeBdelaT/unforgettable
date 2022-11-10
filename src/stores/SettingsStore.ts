@@ -1,5 +1,5 @@
 import create from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 
 interface SettingsState {
   displayCompletedTasks: boolean;
@@ -8,16 +8,18 @@ interface SettingsState {
 
 const useSettingsStore = create<SettingsState>()(
   devtools(
-    (set) => ({
-      displayCompletedTasks: true,
-      toggleDisplayCompletedTasks: () =>
-        set((state) => ({
-          displayCompletedTasks: !state.displayCompletedTasks,
-        })),
-    }),
-    {
-      name: "settings-storage",
-    }
+    persist(
+      (set) => ({
+        displayCompletedTasks: true,
+        toggleDisplayCompletedTasks: () =>
+          set((state) => ({
+            displayCompletedTasks: !state.displayCompletedTasks,
+          })),
+      }),
+      {
+        name: "settings-storage",
+      }
+    )
   )
 );
 

@@ -5,7 +5,11 @@ import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { DATE_TIME_FORMAT, GET_ALL_TASKS_QUERY_KEY } from "../../constants";
+import {
+  DATE_TIME_FORMAT,
+  GET_ALL_TASKS_QUERY_KEY,
+  TIME_FORMAT,
+} from "../../constants";
 import moment from "moment";
 
 interface TaskListItemProps {
@@ -30,7 +34,11 @@ const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
           if (!old) return [];
           return old.map((task) =>
             task.id === toggledTaskId
-              ? { ...task, completed: !task.completed }
+              ? {
+                  ...task,
+                  completed: !task.completed,
+                  completedAt: !task.completed ? new Date() : null,
+                }
               : task
           );
         }
@@ -84,13 +92,19 @@ const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
     if (!toggleTaskStatusLoading) toggleTaskStatusMutation({ taskId: task.id });
   };
 
-  const dateTimeToDisplay = moment(task.createdAt).format(DATE_TIME_FORMAT);
+  const createdAt = moment(task.createdAt).format(DATE_TIME_FORMAT);
+
+  const minutesFromCompleted = task.completedAt
+    ? Math.ceil(
+        moment.duration(moment(new Date()).diff(task.completedAt)).asMinutes()
+      )
+    : null;
 
   const { completed } = task;
 
   return (
     <li
-      className={`relative mb-4 flex items-start gap-4 rounded-lg bg-slate-800 px-4 pt-3 pb-8 pr-7 shadow-md transition-colors last:mb-0 ${
+      className={`relative mb-4 flex items-start gap-2 rounded-lg bg-slate-800 px-4 pt-3 pb-8 pr-7 shadow-md transition-colors last:mb-0 ${
         completed ? "bg-opacity-70" : "hover:bg-opacity-90"
       }`}
     >
@@ -100,7 +114,7 @@ const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
         checked={completed}
         type="checkbox"
         disabled={toggleTaskStatusLoading}
-        className=" relative flex h-6 w-6 flex-shrink-0 cursor-pointer appearance-none items-center justify-center rounded-xl bg-indigo-200 checked:before:block  checked:before:h-4 checked:before:w-4 checked:before:rounded-full checked:before:bg-indigo-400 disabled:bg-slate-200 disabled:checked:before:bg-slate-400"
+        className=" relative mr-2 flex h-6 w-6 flex-shrink-0 cursor-pointer appearance-none items-center justify-center rounded-xl bg-indigo-200 checked:before:block  checked:before:h-4 checked:before:w-4 checked:before:rounded-full checked:before:bg-indigo-400 disabled:bg-slate-200 disabled:checked:before:bg-slate-400"
       />
       <p
         className={`${
@@ -109,14 +123,20 @@ const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
       >
         {task.text}
       </p>
-      <span className="absolute bottom-0 right-0 m-2 self-end text-xs font-light text-gray-300">
-        {dateTimeToDisplay}
-      </span>
+      <div className="absolute bottom-2 right-2 flex items-center gap-1 text-xs font-light">
+        {minutesFromCompleted && (
+          <span className="text-xs font-light text-slate-600">
+            (Listo hace {minutesFromCompleted}{" "}
+            {`minuto${minutesFromCompleted > 1 ? "s" : ""}`})
+          </span>
+        )}
+        <span className=" text-gray-500">{createdAt}</span>
+      </div>
       <button
         onClick={handleDelete}
-        className="absolute top-0 right-0 flex h-8 w-8 justify-end"
+        className="absolute top-2 right-2 flex h-8 w-8 justify-end"
       >
-        <XMarkIcon className="m-2 h-4 w-4 text-gray-500" />
+        <XMarkIcon className="h-4 w-4 text-gray-500" />
       </button>
     </li>
   );

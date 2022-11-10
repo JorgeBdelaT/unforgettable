@@ -40,6 +40,7 @@ const CreateTask = () => {
               deadline: null,
               completed: false,
               deletedAt: null,
+              completedAt: null,
               createdAt: new Date(),
               updatedAt: new Date(),
             };
