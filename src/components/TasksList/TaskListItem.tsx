@@ -90,27 +90,26 @@ const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
 
   return (
     <li
-      className={`relative mb-4 flex flex-col rounded-lg bg-slate-800 py-2 px-4 pr-6 shadow-md transition-colors last:mb-0 ${
+      className={`relative mb-4 flex items-start gap-4 rounded-lg bg-slate-800 px-4 pt-3 pb-8 pr-7 shadow-md transition-colors last:mb-0 ${
         completed ? "bg-opacity-70" : "hover:bg-opacity-90"
       }`}
     >
-      <div className="container mt-1 flex items-start gap-4">
-        <input
-          onChange={handleToggleTaskStatus}
-          value={`${completed}`}
-          checked={completed}
-          type="checkbox"
-          className="relative flex h-6 w-6 flex-shrink-0 cursor-pointer appearance-none items-center justify-center rounded-xl bg-indigo-200  checked:before:block checked:before:h-4 checked:before:w-4 checked:before:rounded-full checked:before:bg-indigo-400"
-        />
-        <p
-          className={`${
-            completed ? "text-gray-400 line-through" : ""
-          } decoration-indigo-400 decoration-2`}
-        >
-          {task.text}
-        </p>
-      </div>
-      <span className="self-end text-xs font-light text-gray-300">
+      <input
+        onChange={handleToggleTaskStatus}
+        value={`${completed}`}
+        checked={completed}
+        type="checkbox"
+        disabled={toggleTaskStatusLoading}
+        className=" relative flex h-6 w-6 flex-shrink-0 cursor-pointer appearance-none items-center justify-center rounded-xl bg-indigo-200 checked:before:block  checked:before:h-4 checked:before:w-4 checked:before:rounded-full checked:before:bg-indigo-400 disabled:bg-slate-200 disabled:checked:before:bg-slate-400"
+      />
+      <p
+        className={`${
+          completed ? "text-gray-400 line-through" : ""
+        } decoration-indigo-400 decoration-2`}
+      >
+        {task.text}
+      </p>
+      <span className="absolute bottom-0 right-0 m-2 self-end text-xs font-light text-gray-300">
         {dateTimeToDisplay}
       </span>
       <button
