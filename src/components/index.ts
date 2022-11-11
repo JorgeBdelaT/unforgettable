@@ -5,7 +5,7 @@ import SignOutBtn from "./SignOutBtn";
 import { TasksList, TasksListSkeleton } from "./TasksList";
 import ToggleCompletedTasksVisibilityBtn from "./ToggleCompletedTasksVisibilityBtn";
 import UndoLastTaskRemovalBtn from "./UndoLastTaskRemovalBtn";
-import UserLists from "./UserLists";
+import ListsGrid from "./ListsGrid";
 
 export {
   CreateTask,
@@ -16,5 +16,5 @@ export {
   TasksListSkeleton,
   ToggleCompletedTasksVisibilityBtn,
   UndoLastTaskRemovalBtn,
-  UserLists,
+  ListsGrid,
 };

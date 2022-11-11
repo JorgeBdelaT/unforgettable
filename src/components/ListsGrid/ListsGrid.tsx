@@ -1,14 +1,14 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
-import { HEADER_HEIGHT, CREATE_TASK_FORM_HEIGHT } from "../../constants";
+import { HEADER_HEIGHT, BOTTOM_FORM_HEIGHT } from "../../constants";
 
 import { trpc } from "../../utils/trpc";
-import UserListsItem from "./UserListsItem";
+import ListsGridItem from "./ListsGridItem";
 
 // import TaskListItem from "./TaskListItem";
 // import TasksListSkeleton from "./TasksListSkeleton";
 
-const UserLists = () => {
+const ListsGrid = () => {
   // const displayCompletedTasks = useSettingsStore(
   //   (state) => state.displayCompletedTasks
   // );
@@ -26,7 +26,7 @@ const UserLists = () => {
       <div
         className="flex flex-col items-center justify-center gap-6 overflow-y-auto text-slate-500"
         style={{
-          height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+          height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
         }}
       >
         <ExclamationTriangleIcon className="h-24 w-24" />
@@ -37,7 +37,7 @@ const UserLists = () => {
   return (
     <div
       style={{
-        maxHeight: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+        maxHeight: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
       }}
     >
       <div
@@ -45,11 +45,15 @@ const UserLists = () => {
         className="grid h-full grid-cols-2 items-start gap-3 overflow-y-auto px-4 pt-16 lg:grid-cols-3"
       >
         {lists?.map((list) => (
-          <UserListsItem key={list.id} list={list} />
+          <ListsGridItem
+            key={list.id}
+            list={list}
+            deleteEnabled={lists.length > 1}
+          />
         ))}
       </div>
     </div>
   );
 };
 
-export default UserLists;
+export default ListsGrid;
