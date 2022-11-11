@@ -10,11 +10,13 @@ export const listRouter = router({
       })
     )
     .mutation(async ({ input: { name }, ctx }) => {
-      return ctx.prisma.list.create({
-        data: {
-          name,
-        },
-      });
+      if (ctx.session?.user)
+        return ctx.prisma.list.create({
+          data: {
+            name,
+            users: { connect: { id: ctx.session.user.id } },
+          },
+        });
     }),
 
   delete: publicProcedure
@@ -36,6 +38,7 @@ export const listRouter = router({
         tasks: { where: { deletedAt: null } },
         _count: { select: { users: true } },
       },
+      orderBy: { createdAt: "asc" },
     });
 
     return userLists.map((list) => ({
