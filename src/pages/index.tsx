@@ -12,6 +12,10 @@ import {
   ToggleCompletedTasksVisibilityBtn,
   UndoLastTaskRemovalBtn,
 } from "../components";
+import useSelectedListStore from "../stores/SelectedListStore";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { ROUTES } from "../constants";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
@@ -19,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!session) {
     return {
       redirect: {
-        destination: "/auth",
+        destination: ROUTES.auth,
         permanent: false,
       },
       props: { from: ctx.req.url },
@@ -29,10 +33,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const Tasks: NextPage = () => {
+  const selectedList = useSelectedListStore((state) => state.selectedList);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!selectedList) router.push(ROUTES.lists);
+  }, [selectedList, router]);
+
   return (
     <>
       <Head>
-        <title>Inolvidable</title>
+        <title>Inolvidable | Tareas</title>
         <meta name="description" content="Una aplicación para recordar todo." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
