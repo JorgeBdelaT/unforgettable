@@ -3,7 +3,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { Header, SignOutBtn, ListsGrid } from "../../components";
+import { Header, SignOutBtn, ListsGrid, CreateList } from "../../components";
 import useSelectedListStore from "../../stores/SelectedListStore";
 import { ROUTES } from "../../constants";
 
@@ -42,7 +42,7 @@ const Lists: NextPage = () => {
       <section className="flex h-full flex-col">
         <Header title="Listas" actions={<SignOutBtn />} />
         <ListsGrid />
-        {/* TODO: <CreateList /> */}
+        <CreateList />
       </section>
     </>
   );

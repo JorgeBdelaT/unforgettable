@@ -6,8 +6,10 @@ import { TasksList, TasksListSkeleton } from "./TasksList";
 import ToggleCompletedTasksVisibilityBtn from "./ToggleCompletedTasksVisibilityBtn";
 import UndoLastTaskRemovalBtn from "./UndoLastTaskRemovalBtn";
 import ListsGrid from "./ListsGrid";
+import CreateList from "./CreateList";
 
 export {
+  CreateList,
   CreateTask,
   Header,
   Layout,
