@@ -1,25 +1,21 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
-
-import { HEADER_HEIGHT, BOTTOM_FORM_HEIGHT } from "../../constants";
-
+import {
+  HEADER_HEIGHT,
+  BOTTOM_FORM_HEIGHT,
+  LIST_GRID_ID,
+} from "../../constants";
 import { trpc } from "../../utils/trpc";
 import ListsGridItem from "./ListsGridItem";
-
-// import TaskListItem from "./TaskListItem";
-// import TasksListSkeleton from "./TasksListSkeleton";
+import ListsGridSkeleton from "./ListsGridSkeleton";
 
 const ListsGrid = () => {
-  // const displayCompletedTasks = useSettingsStore(
-  //   (state) => state.displayCompletedTasks
-  // );
-
   const {
     data: lists,
     isLoading: listsLoading,
     isError: listsError,
   } = trpc.lists.getAll.useQuery();
 
-  if (listsLoading) return <>loading...</>;
+  if (listsLoading) return <ListsGridSkeleton />;
 
   if (listsError)
     return (
@@ -41,8 +37,8 @@ const ListsGrid = () => {
       }}
     >
       <div
-        // id={TASKS_LIST_ID}
-        className="grid h-full grid-cols-2 items-start gap-3 overflow-y-auto px-4 pt-16 lg:grid-cols-3"
+        id={LIST_GRID_ID}
+        className="grid h-full grid-cols-2 items-start gap-3 overflow-y-auto px-3 pt-16 pb-2 max-[360px]:grid-cols-1 lg:grid-cols-3"
       >
         {lists?.map((list) => (
           <ListsGridItem

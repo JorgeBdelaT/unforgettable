@@ -91,9 +91,9 @@ const ListsGridItem: React.FC<ListsGridItemProps> = ({
   return (
     <div
       onClick={handleClick}
-      className={`relative flex cursor-pointer flex-col items-start gap-2 rounded-lg bg-slate-800 px-4 pt-3 pb-8 pr-7 shadow-md transition-colors hover:bg-opacity-90`}
+      className="relative flex cursor-pointer flex-col items-start gap-2 space-y-0 rounded-lg bg-slate-800 px-4 pt-3 pb-8 pr-7 shadow-md transition-colors hover:bg-opacity-90"
     >
-      <p className="text-xl font-light">{list.name}</p>
+      <p className="text-xl font-light capitalize">{list.name}</p>
       <p className="text-sm font-light text-slate-400">
         {otherUsersCount > 0 ? `Tú y ${otherUsersCount} más` : "Privado"}
       </p>
