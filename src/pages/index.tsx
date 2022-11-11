@@ -13,7 +13,7 @@ import {
   UndoLastTaskRemovalBtn,
 } from "../components";
 import useSelectedListStore from "../stores/SelectedListStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ROUTES } from "../constants";
 
@@ -35,10 +35,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 const Tasks: NextPage = () => {
   const selectedList = useSelectedListStore((state) => state.selectedList);
 
+  const [headetTitle, setHeaderTitle] = useState("tareas");
+
   const router = useRouter();
 
   useEffect(() => {
     if (!selectedList) router.push(ROUTES.lists);
+    else setHeaderTitle(selectedList.name);
   }, [selectedList, router]);
 
   return (
@@ -51,7 +54,8 @@ const Tasks: NextPage = () => {
 
       <section className="flex h-full flex-col">
         <Header
-          title="Tareas"
+          backUrl={ROUTES.lists}
+          title={headetTitle}
           actions={
             <>
               <SignOutBtn />
