@@ -4,11 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 
-import {
-  BOTTOM_FORM_HEIGHT,
-  GET_ALL_TASKS_QUERY_KEY,
-  TASKS_LIST_ID,
-} from "../../constants";
+import { GET_ALL_TASKS_QUERY_KEY, TASKS_LIST_ID } from "../../constants";
+import BottomForm from "../BottomForm";
 
 const CreateTask = () => {
   // TODO: use react hook form
@@ -71,29 +68,18 @@ const CreateTask = () => {
     createTask({ text });
   };
 
+  const handleInput = (e: FormEvent<HTMLInputElement>) =>
+    setText(e.currentTarget.value);
+
   return (
-    <form
-      className="mt-auto flex flex-col justify-center p-6"
-      autoComplete="off"
+    <BottomForm
+      inputName="text"
+      loading={createTaskLoading}
+      onInput={handleInput}
       onSubmit={handleSubmit}
-      style={{ height: BOTTOM_FORM_HEIGHT }}
-    >
-      <input
-        required
-        className="w-full rounded p-2 text-neutral-900"
-        value={text}
-        onInput={(e) => setText(e.currentTarget.value)}
-        placeholder="Algo que hacer?"
-        name="text"
-        type="text"
-      />
-      <button
-        className="mt-3 rounded bg-indigo-600 py-2 px-4 font-bold text-white hover:bg-indigo-500 disabled:pointer-events-none disabled:animate-pulse disabled:bg-gray-400"
-        disabled={createTaskLoading}
-      >
-        {createTaskLoading ? "........" : "Agregar"}
-      </button>
-    </form>
+      placeholder="Algo que hacer?"
+      value={text}
+    />
   );
 };
 
