@@ -3,13 +3,29 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
+import { DEFAULT_LIST_NAME } from "../../../constants";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
+
+        // Create dedault list
+        const hasLists =
+          (await prisma.list.count({
+            where: { users: { some: { id: user.id } } },
+          })) > 0;
+
+        if (!hasLists) {
+          await prisma.list.create({
+            data: {
+              name: DEFAULT_LIST_NAME,
+              users: { connect: { id: user.id } },
+            },
+          });
+        }
       }
       return session;
     },
