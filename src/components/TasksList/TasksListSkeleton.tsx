@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CREATE_TASK_FORM_HEIGHT, HEADER_HEIGHT } from "../../constants";
+import { BOTTOM_FORM_HEIGHT, HEADER_HEIGHT } from "../../constants";
 
 const ITEMS_TO_DISPLAY = 7;
 
@@ -35,7 +35,7 @@ const TasksListSkeleton = () => {
     <ul
       className="overflow-y-auto px-8 pt-16"
       style={{
-        height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+        height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
       }}
     >
       {items}

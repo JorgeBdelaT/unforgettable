@@ -6,7 +6,7 @@ import { useIsMutating } from "@tanstack/react-query";
 import { useMemo } from "react";
 import {
   HEADER_HEIGHT,
-  CREATE_TASK_FORM_HEIGHT,
+  BOTTOM_FORM_HEIGHT,
   TASKS_LIST_ID,
   UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
 } from "../../constants";
@@ -46,7 +46,7 @@ const TasksList = () => {
       <div
         className="flex flex-col items-center justify-center gap-6 overflow-y-auto text-slate-500"
         style={{
-          height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+          height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
         }}
       >
         <ExclamationTriangleIcon className="h-24 w-24" />
@@ -61,7 +61,7 @@ const TasksList = () => {
       <div
         className="flex flex-col items-center justify-center gap-6 overflow-y-auto text-slate-500"
         style={{
-          height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+          height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
         }}
       >
         <NewspaperIcon className="h-24 w-24" />
@@ -74,7 +74,7 @@ const TasksList = () => {
       id={TASKS_LIST_ID}
       className="overflow-y-auto px-8 pt-16"
       style={{
-        height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+        height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
       }}
     >
       {tasksToDisplay?.map((task) => (

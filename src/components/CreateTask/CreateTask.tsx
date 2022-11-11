@@ -5,7 +5,7 @@ import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 
 import {
-  CREATE_TASK_FORM_HEIGHT,
+  BOTTOM_FORM_HEIGHT,
   GET_ALL_TASKS_QUERY_KEY,
   TASKS_LIST_ID,
 } from "../../constants";
@@ -76,7 +76,7 @@ const CreateTask = () => {
       className="mt-auto flex flex-col justify-center p-6"
       autoComplete="off"
       onSubmit={handleSubmit}
-      style={{ height: CREATE_TASK_FORM_HEIGHT }}
+      style={{ height: BOTTOM_FORM_HEIGHT }}
     >
       <input
         required
