@@ -5,11 +5,7 @@ import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 import { useQueryClient } from "@tanstack/react-query";
 
-import {
-  DATE_TIME_FORMAT,
-  GET_ALL_TASKS_QUERY_KEY,
-  TIME_FORMAT,
-} from "../../constants";
+import { DATE_TIME_FORMAT, GET_ALL_TASKS_QUERY_KEY } from "../../constants";
 import moment from "moment";
 
 interface TaskListItemProps {

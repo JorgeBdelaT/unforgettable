@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CREATE_TASK_FORM_HEIGHT, HEADER_HEIGHT } from "../../constants";
 
-const ITEMS_TO_DISPLAY = 4;
+const ITEMS_TO_DISPLAY = 7;
 
 const getSkeletonItemHeight = () => {
   const minHeight = 12;

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import { signIn } from "next-auth/react";
 import { authOptions } from "../api/auth/[...nextauth]";
+import { ROUTES } from "../../constants";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
@@ -12,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (session) {
     return {
       redirect: {
-        destination: "/",
+        destination: ROUTES.lists,
         permanent: false,
       },
       props: { from: ctx.req.url },
