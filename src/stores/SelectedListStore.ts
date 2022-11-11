@@ -2,7 +2,7 @@ import { List, Task } from "@prisma/client";
 import create from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-type ListWithTasksAndUsersCount = List & {
+export type ListWithTasksAndUsersCount = List & {
   tasks: Task[];
   _count: {
     users: number;
