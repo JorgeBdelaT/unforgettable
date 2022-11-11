@@ -72,7 +72,7 @@ const TasksList = () => {
   return (
     <ul
       id={TASKS_LIST_ID}
-      className="overflow-y-auto px-8 pt-16"
+      className="overflow-y-auto px-4 pt-16"
       style={{
         height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
       }}

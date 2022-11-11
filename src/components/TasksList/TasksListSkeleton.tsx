@@ -6,7 +6,7 @@ const ITEMS_TO_DISPLAY = 7;
 const getSkeletonItemHeight = () => {
   const minHeight = 12;
   const maxHeight = 24;
-  const stepSize = 4;
+  const stepSize = 2;
 
   const height = Math.max(
     stepSize * Math.floor((Math.random() * maxHeight) / stepSize),
@@ -33,7 +33,7 @@ const TasksListSkeleton = () => {
 
   return (
     <ul
-      className="overflow-y-auto px-8 pt-16"
+      className="overflow-y-auto px-4 pt-16"
       style={{
         height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
       }}
