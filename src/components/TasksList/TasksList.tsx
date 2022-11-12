@@ -10,6 +10,7 @@ import {
   TASKS_LIST_ID,
   UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
 } from "../../constants";
+import useSelectedListStore from "../../stores/SelectedListStore";
 import useSettingsStore from "../../stores/SettingsStore";
 
 import { trpc } from "../../utils/trpc";
@@ -22,11 +23,16 @@ const TasksList = () => {
     (state) => state.displayCompletedTasks
   );
 
+  const selectedList = useSelectedListStore((state) => state.selectedList);
+
   const {
     data: tasks,
     isLoading: tasksLoading,
     isError: tasksError,
-  } = trpc.tasks.getAll.useQuery();
+  } = trpc.tasks.getAll.useQuery(
+    { listId: selectedList?.id },
+    { enabled: !!selectedList }
+  );
 
   const isMutatingUndoLastRemoval = useIsMutating({
     mutationKey: UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,

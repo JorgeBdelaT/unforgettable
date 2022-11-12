@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 import { Task } from "@prisma/client";
@@ -15,30 +15,30 @@ interface TaskListItemProps {
 const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
   const queryClient = useQueryClient();
 
+  const allTasksQueryKey = useMemo(
+    () => GET_ALL_TASKS_QUERY_KEY(task.listId),
+    [task.listId]
+  );
+
   const {
     mutate: toggleTaskStatusMutation,
     isLoading: toggleTaskStatusLoading,
   } = trpc.tasks.toggleCompletedState.useMutation({
     onMutate: async ({ taskId: toggledTaskId }) => {
-      const previousTasks = queryClient.getQueryData<Task[]>(
-        GET_ALL_TASKS_QUERY_KEY
-      );
+      const previousTasks = queryClient.getQueryData<Task[]>(allTasksQueryKey);
 
-      queryClient.setQueryData(
-        GET_ALL_TASKS_QUERY_KEY,
-        (old: Task[] | undefined) => {
-          if (!old) return [];
-          return old.map((task) =>
-            task.id === toggledTaskId
-              ? {
-                  ...task,
-                  completed: !task.completed,
-                  completedAt: !task.completed ? new Date() : null,
-                }
-              : task
-          );
-        }
-      );
+      queryClient.setQueryData(allTasksQueryKey, (old: Task[] | undefined) => {
+        if (!old) return [];
+        return old.map((task) =>
+          task.id === toggledTaskId
+            ? {
+                ...task,
+                completed: !task.completed,
+                completedAt: !task.completed ? new Date() : null,
+              }
+            : task
+        );
+      });
 
       return { previousTasks };
     },
@@ -48,19 +48,18 @@ const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
         `No se pudo cambiar el estado de la tarea :( ${err.message}`
       );
 
-      queryClient.setQueryData(GET_ALL_TASKS_QUERY_KEY, context?.previousTasks);
+      queryClient.setQueryData(allTasksQueryKey, context?.previousTasks);
     },
   });
 
   const { mutate: deleteTaskMutation, isLoading: deleteTaskMutationLoading } =
     trpc.tasks.delete.useMutation({
       onMutate: async ({ taskId: deletedTaskId }) => {
-        const previousTasks = queryClient.getQueryData<Task[]>(
-          GET_ALL_TASKS_QUERY_KEY
-        );
+        const previousTasks =
+          queryClient.getQueryData<Task[]>(allTasksQueryKey);
 
         queryClient.setQueryData(
-          GET_ALL_TASKS_QUERY_KEY,
+          allTasksQueryKey,
           (old: Task[] | undefined) => {
             if (!old) return [];
             return old.filter(({ id }) => id !== deletedTaskId);
@@ -73,10 +72,7 @@ const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
         // TODO: do something better with the error
         window.alert(`No se pudo eliminar la tarea :( ${err.message}`);
 
-        queryClient.setQueryData(
-          GET_ALL_TASKS_QUERY_KEY,
-          context?.previousTasks
-        );
+        queryClient.setQueryData(allTasksQueryKey, context?.previousTasks);
       },
     });
 
