@@ -7,16 +7,22 @@ export const listRouter = router({
     .input(
       z.object({
         name: z.string().trim(),
+        sharedWith: z.array(z.string().cuid()).nullish(),
       })
     )
-    .mutation(async ({ input: { name }, ctx }) => {
-      if (ctx.session?.user)
+    .mutation(async ({ input: { name, sharedWith }, ctx }) => {
+      if (ctx.session?.user) {
+        const usersIds = [{ id: ctx.session.user.id }];
+
+        if (sharedWith) sharedWith.forEach((id) => usersIds.push({ id }));
+
         return ctx.prisma.list.create({
           data: {
             name,
-            users: { connect: { id: ctx.session.user.id } },
+            users: { connect: usersIds },
           },
         });
+      }
     }),
 
   delete: publicProcedure
@@ -28,6 +34,8 @@ export const listRouter = router({
     }),
 
   // TODO: edit name
+
+  // TODO: share list
 
   getAll: publicProcedure.query(async ({ ctx }) => {
     const maxCompletedDate = moment(new Date()).subtract(24, "h").toDate();
