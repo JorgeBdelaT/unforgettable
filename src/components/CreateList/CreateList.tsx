@@ -4,10 +4,16 @@ import { trpc } from "../../utils/trpc";
 import { GET_ALL_LISTS_QUERY_KEY, LIST_GRID_ID } from "../../constants";
 import BottomForm from "../BottomForm";
 import { ListWithTasksAndUsersCount } from "../../stores/SelectedListStore";
+import VisibilityConfigModal from "./VisibilityConfigModal";
 
 const CreateList = () => {
   // TODO: use react hook form
   const [name, setName] = useState("");
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   const queryClient = useQueryClient();
 
@@ -16,8 +22,6 @@ const CreateList = () => {
       onMutate: async ({ name: cretedListName }) => {
         // scroll to bottom of the grid
         const listsGridElement = document.getElementById(LIST_GRID_ID);
-        console.log(listsGridElement);
-
         listsGridElement?.scrollTo({
           top: listsGridElement.getBoundingClientRect().height,
           behavior: "smooth",
@@ -65,22 +69,43 @@ const CreateList = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    openModal();
+  };
+
+  const handlePrivateListCreation = () => {
     createList({ name });
+    closeModal();
+  };
+
+  const handleSharedListCreation = () => {
+    // TODO: add users
+    // createList({ name });
+    closeModal();
   };
 
   const handleInput = (e: FormEvent<HTMLInputElement>) =>
     setName(e.currentTarget.value);
 
   return (
-    <BottomForm
-      buttonClassName="bg-emerald-400 hover:bg-emerald-500"
-      inputName="name"
-      loading={createListLoading}
-      onInput={handleInput}
-      onSubmit={handleSubmit}
-      placeholder="Agrega una lista!"
-      value={name}
-    />
+    <>
+      <VisibilityConfigModal
+        handlePrivateListCreation={handlePrivateListCreation}
+        handleSharedListCreation={handleSharedListCreation}
+        closeModal={closeModal}
+        listName={name}
+        isOpen={isOpen}
+      />
+
+      <BottomForm
+        buttonClassName="bg-emerald-400 hover:bg-emerald-500"
+        inputName="name"
+        loading={createListLoading}
+        onInput={handleInput}
+        onSubmit={handleSubmit}
+        placeholder="Agrega una lista!"
+        value={name}
+      />
+    </>
   );
 };
 

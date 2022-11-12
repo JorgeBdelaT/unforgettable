@@ -1,9 +1,7 @@
 import React, { useState, FormEvent, useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-
 import { Task } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
-
 import { GET_ALL_TASKS_QUERY_KEY, TASKS_LIST_ID } from "../../constants";
 import BottomForm from "../BottomForm";
 import useSelectedListStore from "../../stores/SelectedListStore";
