@@ -6,10 +6,11 @@ import { useIsMutating } from "@tanstack/react-query";
 import { useMemo } from "react";
 import {
   HEADER_HEIGHT,
-  CREATE_TASK_FORM_HEIGHT,
+  BOTTOM_FORM_HEIGHT,
   TASKS_LIST_ID,
   UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
 } from "../../constants";
+import useSelectedListStore from "../../stores/SelectedListStore";
 import useSettingsStore from "../../stores/SettingsStore";
 
 import { trpc } from "../../utils/trpc";
@@ -22,11 +23,16 @@ const TasksList = () => {
     (state) => state.displayCompletedTasks
   );
 
+  const selectedList = useSelectedListStore((state) => state.selectedList);
+
   const {
     data: tasks,
     isLoading: tasksLoading,
     isError: tasksError,
-  } = trpc.tasks.getAll.useQuery();
+  } = trpc.tasks.getAll.useQuery(
+    { listId: selectedList?.id },
+    { enabled: !!selectedList }
+  );
 
   const isMutatingUndoLastRemoval = useIsMutating({
     mutationKey: UNDO_LAST_TASK_REMOVAL_MUTATION_KEY,
@@ -46,7 +52,7 @@ const TasksList = () => {
       <div
         className="flex flex-col items-center justify-center gap-6 overflow-y-auto text-slate-500"
         style={{
-          height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+          height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
         }}
       >
         <ExclamationTriangleIcon className="h-24 w-24" />
@@ -61,7 +67,7 @@ const TasksList = () => {
       <div
         className="flex flex-col items-center justify-center gap-6 overflow-y-auto text-slate-500"
         style={{
-          height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+          height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
         }}
       >
         <NewspaperIcon className="h-24 w-24" />
@@ -72,9 +78,9 @@ const TasksList = () => {
   return (
     <ul
       id={TASKS_LIST_ID}
-      className="overflow-y-auto px-8 pt-16"
+      className="overflow-y-auto px-4 pt-16"
       style={{
-        height: `calc(100vh - ${HEADER_HEIGHT} - ${CREATE_TASK_FORM_HEIGHT})`,
+        height: `calc(100vh - ${HEADER_HEIGHT} - ${BOTTOM_FORM_HEIGHT})`,
       }}
     >
       {tasksToDisplay?.map((task) => (

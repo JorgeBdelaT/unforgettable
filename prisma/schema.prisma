@@ -14,12 +14,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// TODO: remove
-model Record {
-  id        String    @id @default(cuid())
-  content   String
-  completed Boolean   @default(false)
-  deadline  DateTime?
+model List {
+  id    String @id @default(cuid())
+  name  String
+  users User[]
+  tasks Task[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -31,20 +30,13 @@ model Task {
   completed Boolean   @default(false)
   deadline  DateTime?
   priority  Int
+  listId    String
+  list      List      @relation(fields: [listId], references: [id], onDelete: Cascade)
 
   deletedAt   DateTime?
   completedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-}
-
-model Reminder {
-  id       String @id @default(cuid())
-  text     String
-  priority Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 // Necessary for Next auth
@@ -82,6 +74,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  lists         List[]
 }
 
 model VerificationToken {

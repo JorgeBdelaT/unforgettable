@@ -2,8 +2,10 @@
 import { router } from "../trpc";
 import { taskRouter } from "./task";
 import { authRouter } from "./auth";
+import { listRouter } from "./list";
 
 export const appRouter = router({
+  lists: listRouter,
   tasks: taskRouter,
   auth: authRouter,
 });
