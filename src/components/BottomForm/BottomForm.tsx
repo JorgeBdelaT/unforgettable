@@ -25,7 +25,7 @@ const BottomForm: FC<BottomFormProps> = ({
 }) => {
   return (
     <form
-      className="mt-1 flex items-center justify-center gap-2 px-2"
+      className="mt-auto flex items-center justify-center gap-2 px-2"
       autoComplete="off"
       onSubmit={onSubmit}
       style={{ height: BOTTOM_FORM_HEIGHT }}

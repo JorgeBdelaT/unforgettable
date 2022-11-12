@@ -1,4 +1,4 @@
-export const BOTTOM_FORM_HEIGHT = "4rem";
+export const BOTTOM_FORM_HEIGHT = "5rem";
 export const DATE_TIME_FORMAT = "HH:mm DD.MM";
 export const DEFAULT_LIST_NAME = "No olvidar!";
 export const GET_ALL_TASKS_QUERY_KEY = (listId?: string | null | undefined) => [

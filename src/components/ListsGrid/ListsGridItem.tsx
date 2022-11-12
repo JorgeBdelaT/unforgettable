@@ -97,9 +97,11 @@ const ListsGridItem: React.FC<ListsGridItemProps> = ({
       <p className="text-sm font-light text-slate-400">
         {otherUsersCount > 0 ? `Tú y ${otherUsersCount} más` : "Privado"}
       </p>
-      <p className="text-md text-slate-200">
+      <p className="text-sm text-indigo-200">
         {totalTasks > 0
-          ? `${completedTasksOnLast24h} tarea(s) completadas de ${totalTasks}`
+          ? `${completedTasksOnLast24h} de ${totalTasks} completada${
+              totalTasks > 1 ? "s" : ""
+            }`
           : "Nada por hacer"}
       </p>
       <div className="absolute bottom-2 right-2 flex items-center gap-1 text-xs font-light">
