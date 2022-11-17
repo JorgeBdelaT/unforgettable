@@ -5,15 +5,18 @@ import { GET_ALL_LISTS_QUERY_KEY, LIST_GRID_ID } from "../../constants";
 import BottomForm from "../BottomForm";
 import { ListWithTasksAndUsersCount } from "../../stores/SelectedListStore";
 import VisibilityConfigModal from "./VisibilityConfigModal";
+import useCreateListStore from "../../stores/CreateListStore";
 
 const CreateList = () => {
-  // TODO: use react hook form
-  const [name, setName] = useState("");
-
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+
+  const name = useCreateListStore((state) => state.name);
+  const setName = useCreateListStore((state) => state.setName);
+  const sharedWith = useCreateListStore((state) => state.sharedWith);
+  const setSharedWith = useCreateListStore((state) => state.setSharedWith);
 
   const queryClient = useQueryClient();
 
@@ -28,6 +31,7 @@ const CreateList = () => {
         });
 
         setName("");
+        setSharedWith([]);
 
         await queryClient.cancelQueries(GET_ALL_LISTS_QUERY_KEY);
         const previousLists = queryClient.getQueryData(GET_ALL_LISTS_QUERY_KEY);
@@ -42,7 +46,7 @@ const CreateList = () => {
               updatedAt: new Date(),
               tasks: [],
               _count: {
-                users: 1,
+                users: sharedWith.length + 1,
               },
             };
 
@@ -72,14 +76,8 @@ const CreateList = () => {
     openModal();
   };
 
-  const handlePrivateListCreation = () => {
-    createList({ name });
-    closeModal();
-  };
-
-  const handleSharedListCreation = () => {
-    // TODO: add users
-    // createList({ name });
+  const handleListCreation = () => {
+    createList({ name, sharedWith: sharedWith.map(({ id }) => ({ id })) });
     closeModal();
   };
 
@@ -89,10 +87,8 @@ const CreateList = () => {
   return (
     <>
       <VisibilityConfigModal
-        handlePrivateListCreation={handlePrivateListCreation}
-        handleSharedListCreation={handleSharedListCreation}
         closeModal={closeModal}
-        listName={name}
+        handleListCreation={handleListCreation}
         isOpen={isOpen}
       />
 
