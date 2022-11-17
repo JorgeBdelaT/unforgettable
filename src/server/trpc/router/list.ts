@@ -7,14 +7,14 @@ export const listRouter = router({
     .input(
       z.object({
         name: z.string().trim(),
-        sharedWith: z.array(z.string().cuid()).nullish(),
+        sharedWith: z.array(z.object({ id: z.string().cuid() })).nullish(),
       })
     )
     .mutation(async ({ input: { name, sharedWith }, ctx }) => {
       if (ctx.session?.user) {
         const usersIds = [{ id: ctx.session.user.id }];
 
-        if (sharedWith) sharedWith.forEach((id) => usersIds.push({ id }));
+        if (sharedWith) usersIds.push(...sharedWith);
 
         return ctx.prisma.list.create({
           data: {
